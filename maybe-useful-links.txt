@@ -1,0 +1,18 @@
+# https://aronakhmad.medium.com/twitter-data-cleaning-using-python-db1ec2f28f08
+# https://pypi.org/project/tweet-preprocessor/
+# https://towardsdatascience.com/basic-tweet-preprocessing-in-python-efd8360d529e
+
+https://www.youtube.com/watch?v=pMjT8GIX0co
+https://github.com/peterzukerman/Twitter-Sarcasm-Detection
+https://towardsdatascience.com/sarcasm-detection-with-nlp-cbff1723f69a
+https://medium.com/@robisipos/detecting-sarcasm-in-text-using-pytorch-2e1b3c382dfa
+https://github.com/rishabhmisra/Sarcasm-Detection-using-NN
+https://github.com/tomoverman/iSarcasmNU
+https://github.com/BinaryBlackhole/Pytorch-implementation-twitter-sentiment-analysis-using-RNN
+
+
+
+https://aclanthology.org/2020.figlang-1.7/
+https://aclanthology.org/2020.figlang-1.7.pdf
+
+https://arxiv.org/pdf/2107.02276.pdf
