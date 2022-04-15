@@ -2,54 +2,69 @@ import pandas as pd
 import re
 import preprocessor as p
 
-import html
 import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.tokenize import TweetTokenizer
 
-
-test_or_train = 'train'
+test_or_train = 'test'
 input_file = f'data/{test_or_train}_downloaded.csv'
-output_file = f'data/{test_or_train}_preprocessed.csv'
+output_file = f'data/{test_or_train}_ready.csv'
+"""
+    TODO:
+        1. decide what to do with hashtags:
+            - remove them?
+            - if no - should the '#' be present? how to tokenize it?
+        2. set limit of tokens in single row?
+        3. padding?
+"""
+p.set_options(
+    p.OPT.URL, p.OPT.EMOJI, p.OPT.MENTION, p.OPT.SMILEY, p.OPT.NUMBER, p.OPT.RESERVED
+)  # remove everything instead of hashtags
 
 if __name__ == '__main__':
     df = pd.read_csv(input_file)
-    tweets = df['text'].astype('string')
+    df['text'] = df['text'].astype('string')
 
-    # TODO: hashtags probably should not be removed
-    # remove hashtags, urls, mentions, emojis etc.
-    for i, v in enumerate(tweets):
-        tweets.loc[i] = p.clean(v)
+    # remove urls, mentions, emojis etc.
+    for i, tweet_text in enumerate(df['text']):
+        df['text'].loc[i] = p.clean(tweet_text)
 
     # remove digits
-    tweets = tweets.replace('\d+', '')
+    df['text'] = df['text'].replace('\d+', '')
 
     # make everything lowercase
-    tweets = tweets.str.lower()
+    df['text'] = df['text'].str.lower()
 
     # remove punctuation
-    for i, v in enumerate(tweets):
-        tweets.loc[i] = re.sub(r'[^\w\s]', '', v)
+    for i, tweet_text in enumerate(df['text']):
+        df['text'].loc[i] = re.sub(r'[^\w\s#]', '', tweet_text)  # DO NOT REMOVE HASH
 
     # remove unnecessary whitespaces and newlines
-    for i, v in enumerate(tweets):
-        tweets.loc[i] = re.sub(" +", " ", v)
-        tweets.loc[i] = re.sub("\n", " ", v)
-        tweets.loc[i] = re.sub("\t", " ", v)
+    for i, tweet_text in enumerate(df['text']):
+        df['text'].loc[i] = re.sub(" +", " ", tweet_text)
+        df['text'].loc[i] = re.sub("\n", " ", df['text'].loc[i])
+        df['text'].loc[i] = re.sub("\t", " ", df['text'].loc[i])
 
     # remove empty tweets
-    # tweets = tweets.drop(tweets[tweets == ""].index)
+    df = df.drop(df['text'][df['text'] == ""].index)
 
-    # tokens = []
-    # tokenizer = TweetTokenizer()
-    # print(tweets.head())
-    # for i, v in enumerate(tweets):
-    #     tokens.append(tokenizer.tokenize(v))
+    # tokenize
+    df['tokens'] = [[]] * len(df)
+    tokenizer = TweetTokenizer()
+    pd.options.mode.chained_assignment = None  # default='warn'
+    for i, tweet_text in enumerate(df['text']):
+        df['tokens'].loc[i] = tokenizer.tokenize(tweet_text)
 
-    # nltk.download('stopwords')
-    # stop_words = set(stopwords.words('english'))
-    # print(stop_words)
+    # remove english stop words eg. 'a', 'the', ...
+    nltk.download('stopwords')
+    stop_words = set(stopwords.words('english'))
+    for i, tweet_tokens in enumerate(df['tokens']):
+        df['tokens'].loc[i] = [token for token in tweet_tokens if token not in stop_words]
 
-    # df['preprocessed'] = tweets
-    # df.to_csv(output_file)
+    # set labels as zeros and ones
+    for i, label in enumerate(df['sarcasm_label']):
+        df['sarcasm_label'].loc[i] = 0 if label == 'not_sarcastic' else 1
+
+    df = df[['sarcasm_label', 'tokens']]
+    df.to_csv(output_file)
