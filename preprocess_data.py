@@ -7,7 +7,7 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.tokenize import TweetTokenizer
 
-test_or_train = 'test'
+test_or_train = 'train'
 input_file = f'data/{test_or_train}_downloaded.csv'
 output_file = f'data/{test_or_train}_ready.csv'
 """
@@ -65,6 +65,9 @@ if __name__ == '__main__':
     # set labels as zeros and ones
     for i, label in enumerate(df['sarcasm_label']):
         df['sarcasm_label'].loc[i] = 0 if label == 'not_sarcastic' else 1
+
+    # remove tweets without any token
+    df = df[df['tokens'].map(lambda r: len(r)) > 0]
 
     df = df[['sarcasm_label', 'tokens']]
     df.to_csv(output_file)
