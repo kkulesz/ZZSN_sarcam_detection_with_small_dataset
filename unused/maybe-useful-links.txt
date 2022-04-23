@@ -11,6 +11,7 @@
     https://github.com/rishabhmisra/Sarcasm-Detection-using-NN
     https://github.com/tomoverman/iSarcasmNU
     https://github.com/BinaryBlackhole/Pytorch-implementation-twitter-sentiment-analysis-using-RNN
+    https://huggingface.co/mrm8488/t5-base-finetuned-sarcasm-twitter
 
 
 3. papers
