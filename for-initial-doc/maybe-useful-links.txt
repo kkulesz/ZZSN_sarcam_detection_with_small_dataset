@@ -17,3 +17,12 @@
 3. papers
     https://aclanthology.org/2020.figlang-1.7.pdf
     https://arxiv.org/pdf/2107.02276.pdf
+
+
+
+https://simpletransformers.ai/docs/t5-model/
+https://simpletransformers.ai/docs/binary-classification/
+https://simpletransformers.ai/docs/classification-models/#classificationmodel
+https://towardsdatascience.com/the-guide-to-multi-tasking-with-the-t5-transformer-90c70a08837b
+https://medium.com/mlearning-ai/fine-tuning-bert-for-tweets-classification-ft-hugging-face-8afebadd5dbf
+
