@@ -14,3 +14,7 @@ class TextBinaryClassifier(ABC):
     @abstractmethod
     def eval(self, data):
         pass
+
+    @abstractmethod
+    def predict(self, text):
+        pass

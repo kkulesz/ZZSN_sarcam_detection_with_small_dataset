@@ -1,26 +1,14 @@
 from __future__ import annotations
-from simpletransformers.t5 import T5Model, T5Args
+from simpletransformers.t5 import T5Model
 import pandas as pd
 import torch
 
 from models.abstract_classifier import TextBinaryClassifier
 
 
-
 class T5Wrapper(TextBinaryClassifier):
-    def __init__(self, load_pretrained: bool, args: T5Args):
-        use_cuda = torch.cuda.is_available()
-
-        if load_pretrained:
-            self.model = T5Model(
-                args.model_type, args.output_dir,
-                args=args, use_cuda=use_cuda
-            )
-        else:
-            self.model = T5Model(
-                args.model_type, 't5-base',
-                args=args, use_cuda=use_cuda
-            )
+    def __init__(self, model: T5Model):
+        self.model: T5Model = model
 
     def train(self, data: pd.DataFrame):
         torch.cuda.empty_cache()
@@ -35,6 +23,9 @@ class T5Wrapper(TextBinaryClassifier):
             eval_data=data
         )
 
+    def predict(self, text: str):
+        return self.model.predict(text)
+
     def prepare_data(self, raw_data: pd.DataFrame) -> pd.DataFrame:
         data = raw_data.copy()
         data['prefix'] = 'binary classification'
@@ -43,4 +34,5 @@ class T5Wrapper(TextBinaryClassifier):
         for i, label in enumerate(data['sarcasm_label']):
             data.loc[i, 'target_text'] = '1' if label == 'sarcastic' else '0'
 
+        data = data.astype({'prefix': str, 'input_text': str, 'target_text': str})
         return data[['prefix', 'input_text', 'target_text']]
