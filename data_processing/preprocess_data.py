@@ -8,8 +8,8 @@ from nltk.tokenize import word_tokenize
 from nltk.tokenize import TweetTokenizer
 
 test_or_train = 'train'
-input_file = f'data/{test_or_train}_downloaded.csv'
-output_file = f'data/{test_or_train}_ready.csv'
+input_file = f'../data/{test_or_train}_downloaded.csv'
+output_file = f'../data/{test_or_train}_ready.csv'
 """
     TODO:
         1. decide what to do with hashtags:

@@ -11,8 +11,8 @@ access_token = ''
 access_token_secret = ''
 
 test_or_train = 'train'
-input_file = f'data/isarcasm_{test_or_train}.csv'
-output_file = f'data/{test_or_train}_downloaded.csv'
+input_file = f'../data/isarcasm_{test_or_train}.csv'
+output_file = f'../data/{test_or_train}_downloaded.csv'
 
 if __name__ == '__main__':
     batch_size = 100  # tweepy's limit
