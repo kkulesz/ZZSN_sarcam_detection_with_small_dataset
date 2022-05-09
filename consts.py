@@ -11,9 +11,9 @@ BERT_OUTPUT = 'bert-output'
 T5_MODEL_TYPE = 't5'  # 't5', 'mt5', 'byt5'
 T5_MODEL_NAME = 't5-base'
 
-INIT_TRAIN_SIZE = 300
+INIT_TRAIN_SIZE = 500
 MAX_TRAIN_SIZE = 2700
-STEP = 400
+STEP = 500
 
 t5_args = T5Args(
     model_type=T5_MODEL_TYPE,
