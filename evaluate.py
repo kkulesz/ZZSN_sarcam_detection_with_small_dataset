@@ -19,7 +19,7 @@ use_cuda = torch.cuda.is_available()
 
 def prepare_t5(nrows: int) -> T5Wrapper:
     model_dir = f"{consts.T5_OUTPUT}-{nrows}"
-    t5_args = consts.t5_args
+    t5_args = consts.T5_ARGS
     t5_args.output_dir = f"{model_dir}-eval"
 
     print(f"\t Loading model from: {model_dir}")
@@ -44,6 +44,7 @@ if __name__ == '__main__':
 
     train_size = consts.INIT_TRAIN_SIZE
     while train_size <= consts.MAX_TRAIN_SIZE:
+        torch.cuda.empty_cache()
         print("="*100)
         print(f"Evaluating for nrows={train_size}")
         model = prepare_t5(train_size)

@@ -1,6 +1,7 @@
 import pandas as pd
 import torch
 from simpletransformers.t5 import T5Model
+from simpletransformers.classification import ClassificationModel, ClassificationArgs
 import warnings
 import os
 
@@ -19,7 +20,7 @@ use_cuda = torch.cuda.is_available()
 
 
 def prepare_t5(number_of_rows: int) -> T5Wrapper:
-    t5_args = consts.t5_args
+    t5_args = consts.T5_ARGS
     t5_args.output_dir = f"{consts.T5_OUTPUT}-{number_of_rows}"
     t5 = T5Model(
         t5_args.model_type,
@@ -31,8 +32,17 @@ def prepare_t5(number_of_rows: int) -> T5Wrapper:
     return T5Wrapper(t5)
 
 
-def prepare_bert() -> BertWrapper:
-    pass
+def prepare_bert(number_of_rows: int) -> BertWrapper:
+    bert_args = consts.BERT_ARGS
+    bert_args.output_dir = f"{consts.BERT_OUTPUT}-{number_of_rows}"
+    bert = ClassificationModel(
+        bert_args.model_type,
+        consts.BERT_MODEL_NAME,
+        args=bert_args,
+        use_cuda=use_cuda
+    )
+
+    return BertWrapper(bert)
 
 
 if __name__ == '__main__':
@@ -43,11 +53,14 @@ if __name__ == '__main__':
 
     train_size = consts.INIT_TRAIN_SIZE
     while train_size <= consts.MAX_TRAIN_SIZE:
+        torch.cuda.empty_cache()
         print("=" * 100)
         print(f"Training for nrows={train_size}")
         data = raw_train_data[0: train_size]
 
-        model = prepare_t5(train_size)
+        # model = prepare_t5(train_size)
+        model = prepare_bert(train_size)
+
         trainer = OurTrainer(model)
         trainer.train(data)
 
