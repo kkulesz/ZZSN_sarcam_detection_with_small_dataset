@@ -2,18 +2,12 @@ import pandas as pd
 from simpletransformers.t5 import T5Model
 from simpletransformers.classification import ClassificationModel
 import torch
-import warnings
 from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
 
 from models.t5 import T5Wrapper
 from models.bert import BertWrapper
 import consts
 import utils
-
-# ugly, but simpletransfomers.T5 throws some stupid
-# deprecation warnings if everything is done the way
-# the official tutorial says: https://simpletransformers.ai/docs/t5-model/
-warnings.filterwarnings("ignore", category=FutureWarning)
 
 use_cuda = torch.cuda.is_available()
 
@@ -48,12 +42,10 @@ def prepare_bert(nrows: int) -> BertWrapper:
 
 
 if __name__ == '__main__':
-    utils.seed_torch()
+    utils.prepare_environment()
 
     data = pd.read_csv(consts.TEST_DATA)
-
-    inputs = data['text'].tolist()
-    labels = data['sarcasm_label'].map(lambda l: 1 if l == 'sarcastic' else 0).tolist()
+    inputs, labels = utils.prepare_evaluation_data(data)
 
     train_size = consts.INIT_TRAIN_SIZE
     while train_size <= consts.MAX_TRAIN_SIZE:

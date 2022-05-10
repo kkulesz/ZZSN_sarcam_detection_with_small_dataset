@@ -2,18 +2,12 @@ import pandas as pd
 import torch
 from simpletransformers.t5 import T5Model
 from simpletransformers.classification import ClassificationModel
-import warnings
 
 from models.t5 import T5Wrapper
 from models.bert import BertWrapper
 from trainer import OurTrainer
 import consts
 import utils
-
-# ugly, but simpletransfomers.T5 throws some stupid
-# deprecation warnings if everything is done the way
-# the official tutorial says: https://simpletransformers.ai/docs/t5-model/
-warnings.filterwarnings("ignore", category=FutureWarning)
 
 use_cuda = torch.cuda.is_available()
 
@@ -45,10 +39,11 @@ def prepare_bert(number_of_rows: int) -> BertWrapper:
 
 
 if __name__ == '__main__':
-    utils.seed_torch()
+    utils.prepare_environment()
 
     raw_train_data = pd.read_csv(consts.TRAIN_DATA)
-    data_len = len(raw_train_data)
+    # test_data = pd.read_csv(consts.TEST_DATA)
+    # test_inputs, test_labels = utils.prepare_evaluation_data(test_data)
 
     train_size = consts.INIT_TRAIN_SIZE
     while train_size <= consts.MAX_TRAIN_SIZE:
@@ -62,5 +57,8 @@ if __name__ == '__main__':
 
         trainer = OurTrainer(model)
         trainer.train(data)
+
+        # test_preds = trainer.model.predict(test_inputs)
+        # print(f" Number of positives: {sum(test_preds)}")
 
         train_size += consts.STEP

@@ -11,7 +11,7 @@ class BertWrapper(TextBinaryClassifier):
     def train(self, data):
         self.model.train_model(
             train_df=data,
-            # show_running_loss=True
+            show_running_loss=False
         )
 
     def predict(self, inputs):
