@@ -6,3 +6,4 @@ simpletransformers==0.63.6
 torch==1.11.0+cu113
 tweepy==4.8.0
 tweet_preprocessor==0.6.0
+scikit-learn~=1.0.2

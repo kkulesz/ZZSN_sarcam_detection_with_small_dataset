@@ -12,18 +12,15 @@ class T5Wrapper(TextBinaryClassifier):
     def train(self, data: pd.DataFrame):
         self.model.train_model(
             train_data=data,
-            show_running_loss=True
+            # show_running_loss=True
         )
 
-    def eval(self, data: pd.DataFrame):
-        self.model.eval_model(
-            eval_data=data
-        )
+    def predict(self, inputs):
+        predictions = self.model.predict(inputs)
+        integer_predictions = list(map(lambda p: int(p), predictions))
+        return integer_predictions
 
-    def predict(self, text: str):
-        return self.model.predict(text)
-
-    def prepare_data(self, raw_data: pd.DataFrame) -> pd.DataFrame:
+    def prepare_training_data(self, raw_data: pd.DataFrame) -> pd.DataFrame:
         data = raw_data.copy()
         data['prefix'] = 'binary classification'
         data['input_text'] = data['text']

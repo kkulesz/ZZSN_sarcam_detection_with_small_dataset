@@ -4,7 +4,7 @@ import pandas as pd
 
 class TextBinaryClassifier(ABC):
     @abstractmethod
-    def prepare_data(self, data: pd.DataFrame):
+    def prepare_training_data(self, data: pd.DataFrame):
         pass
 
     @abstractmethod
@@ -12,9 +12,5 @@ class TextBinaryClassifier(ABC):
         pass
 
     @abstractmethod
-    def eval(self, data):
-        pass
-
-    @abstractmethod
-    def predict(self, text):
+    def predict(self, inputs):
         pass

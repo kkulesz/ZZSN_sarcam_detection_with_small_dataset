@@ -8,9 +8,5 @@ class OurTrainer:
         self.model = model
 
     def train(self, raw_data: pd.DataFrame):
-        data = self.model.prepare_data(raw_data)
+        data = self.model.prepare_training_data(raw_data)
         self.model.train(data)
-
-    def eval(self, raw_data: pd.DataFrame):
-        data = self.model.prepare_data(raw_data)
-        self.model.eval(data)

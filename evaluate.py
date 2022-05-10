@@ -1,11 +1,12 @@
 import pandas as pd
 from simpletransformers.t5 import T5Model
+from simpletransformers.classification import ClassificationModel
 import torch
 import warnings
+from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
 
 from models.t5 import T5Wrapper
 from models.bert import BertWrapper
-from trainer import OurTrainer
 import consts
 import utils
 
@@ -33,8 +34,17 @@ def prepare_t5(nrows: int) -> T5Wrapper:
     return T5Wrapper(t5)
 
 
-def prepare_bert() -> BertWrapper:
-    pass
+def prepare_bert(nrows: int) -> BertWrapper:
+    model_dir = f"{consts.BERT_OUTPUT}-{nrows}"
+    bert_args = consts.BERT_ARGS
+    bert = ClassificationModel(
+        bert_args.model_type,
+        model_dir,  # load already trained model
+        args=bert_args,
+        use_cuda=use_cuda
+    )
+
+    return BertWrapper(bert)
 
 
 if __name__ == '__main__':
@@ -42,15 +52,24 @@ if __name__ == '__main__':
 
     data = pd.read_csv(consts.TEST_DATA)
 
+    inputs = data['text'].tolist()
+    labels = data['sarcasm_label'].map(lambda l: 1 if l == 'sarcastic' else 0).tolist()
+
     train_size = consts.INIT_TRAIN_SIZE
     while train_size <= consts.MAX_TRAIN_SIZE:
         torch.cuda.empty_cache()
         print("="*100)
         print(f"Evaluating for nrows={train_size}")
-        model = prepare_t5(train_size)
-        trainer = OurTrainer(model)
+        # model = prepare_t5(train_size)
+        model = prepare_bert(train_size)
 
-        # TODO:
-        XXXX = trainer.eval(data)
+        predictions = model.predict(inputs)
+        print(predictions)
+        print(f" -Number of predicted sarcasms: {sum(predictions)}\n")
+
+        print(f" -Precision:  {precision_score(labels, predictions)}")
+        print(f" -Accuracy:   {accuracy_score(labels, predictions)}")
+        print(f" -Recall:     {recall_score(labels, predictions)}")
+        print(f" -F1 score:   {f1_score(labels, predictions)}")
 
         train_size += consts.STEP

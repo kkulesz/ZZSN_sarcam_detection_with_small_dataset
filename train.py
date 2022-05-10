@@ -1,9 +1,8 @@
 import pandas as pd
 import torch
 from simpletransformers.t5 import T5Model
-from simpletransformers.classification import ClassificationModel, ClassificationArgs
+from simpletransformers.classification import ClassificationModel
 import warnings
-import os
 
 from models.t5 import T5Wrapper
 from models.bert import BertWrapper

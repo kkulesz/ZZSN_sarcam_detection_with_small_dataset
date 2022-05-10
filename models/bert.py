@@ -10,17 +10,15 @@ class BertWrapper(TextBinaryClassifier):
 
     def train(self, data):
         self.model.train_model(
-            data,
-            show_running_loss=True
+            train_df=data,
+            # show_running_loss=True
         )
 
-    def eval(self, raw_data):
-        pass
+    def predict(self, inputs):
+        predictions, raw_outputs = self.model.predict(inputs)
+        return predictions
 
-    def predict(self, text):
-        pass
-
-    def prepare_data(self, raw_data: pd.DataFrame):
+    def prepare_training_data(self, raw_data: pd.DataFrame):
         data = raw_data.copy()
         # 'text' column already present, no need to do anything
         for i, label in enumerate(data['sarcasm_label']):
