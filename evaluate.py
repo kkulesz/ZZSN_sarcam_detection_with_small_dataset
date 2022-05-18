@@ -51,9 +51,14 @@ if __name__ == '__main__':
     while train_size <= consts.MAX_TRAIN_SIZE:
         torch.cuda.empty_cache()
         print("="*100)
-        print(f"Evaluating for nrows={train_size}")
-        # model = prepare_t5(train_size)
-        model = prepare_bert(train_size)
+        print(f"Evaluating {consts.CURRENT_VARIANT} for nrows={train_size}")
+
+        if consts.CURRENT_VARIANT == consts.T5:
+            model = prepare_t5(train_size)
+        elif consts.CURRENT_VARIANT == consts.BERT:
+            model = prepare_bert(train_size)
+        else:
+            raise Exception(f"Invalid variant={consts.CURRENT_VARIANT}!")
 
         predictions = model.predict(inputs)
         print(predictions)

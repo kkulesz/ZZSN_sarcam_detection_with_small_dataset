@@ -2,6 +2,10 @@ import os
 from simpletransformers.t5 import T5Args
 from simpletransformers.classification import ClassificationArgs
 
+T5 = 't5'
+BERT = 'bert'
+CURRENT_VARIANT = BERT
+####################################################################
 DATA_DIR = 'data'
 TRAIN_DATA = os.path.join(DATA_DIR, 'train_preprocessed.csv')
 TEST_DATA = os.path.join(DATA_DIR, 'test_preprocessed.csv')
