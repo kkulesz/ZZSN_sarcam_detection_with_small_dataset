@@ -3,8 +3,8 @@ from simpletransformers.t5 import T5Args
 from simpletransformers.classification import ClassificationArgs
 
 DATA_DIR = 'data'
-TRAIN_DATA = os.path.join(DATA_DIR, 'train_downloaded.csv')
-TEST_DATA = os.path.join(DATA_DIR, 'test_downloaded.csv')
+TRAIN_DATA = os.path.join(DATA_DIR, 'train_preprocessed.csv')
+TEST_DATA = os.path.join(DATA_DIR, 'test_preprocessed.csv')
 
 T5_OUTPUT = 't5-output'
 BERT_OUTPUT = 'bert-output'

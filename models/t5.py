@@ -22,10 +22,10 @@ class T5Wrapper(TextBinaryClassifier):
 
     def prepare_training_data(self, raw_data: pd.DataFrame) -> pd.DataFrame:
         data = raw_data.copy()
+
         data['prefix'] = 'binary classification'
         data['input_text'] = data['text']
-        for i, label in enumerate(data['sarcasm_label']):
-            data.loc[i, 'target_text'] = '1' if label == 'sarcastic' else '0'
-
+        data['target_text'] = data['labels']
         data = data.astype({'prefix': str, 'input_text': str, 'target_text': str})
+
         return data[['prefix', 'input_text', 'target_text']]

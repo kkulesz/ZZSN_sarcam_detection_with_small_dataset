@@ -30,7 +30,7 @@ def prepare_environment():
 
 
 def prepare_evaluation_data(data):
-    inputs = data['text'].tolist()
-    labels = data['sarcasm_label'].map(lambda l: 1 if l == 'sarcastic' else 0).tolist()
+    inputs = data['text'].astype(str).values.tolist()
+    labels = data['sarcasm_label'].astype(int).values.tolist()
 
-    return  inputs, labels
+    return inputs, labels

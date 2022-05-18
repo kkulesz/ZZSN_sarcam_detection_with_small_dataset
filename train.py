@@ -42,8 +42,8 @@ if __name__ == '__main__':
     utils.prepare_environment()
 
     raw_train_data = pd.read_csv(consts.TRAIN_DATA)
-    # test_data = pd.read_csv(consts.TEST_DATA)
-    # test_inputs, test_labels = utils.prepare_evaluation_data(test_data)
+    test_data = pd.read_csv(consts.TEST_DATA)
+    test_inputs, test_labels = utils.prepare_evaluation_data(test_data)
 
     train_size = consts.INIT_TRAIN_SIZE
     while train_size <= consts.MAX_TRAIN_SIZE:
@@ -58,7 +58,7 @@ if __name__ == '__main__':
         trainer = OurTrainer(model)
         trainer.train(data)
 
-        # test_preds = trainer.model.predict(test_inputs)
-        # print(f" Number of positives: {sum(test_preds)}")
+        test_preds = trainer.model.predict(test_inputs)
+        print(f" Number of positives: {sum(test_preds)}")
 
         train_size += consts.STEP

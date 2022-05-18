@@ -20,9 +20,9 @@ class BertWrapper(TextBinaryClassifier):
 
     def prepare_training_data(self, raw_data: pd.DataFrame):
         data = raw_data.copy()
-        # 'text' column already present, no need to do anything
-        for i, label in enumerate(data['sarcasm_label']):
-            data.loc[i, 'labels'] = 1 if label == 'sarcastic' else 0
 
+        # 'text' column already present, no need to do anything
+        data['labels'] = data['sarcasm_label']
         data = data.astype({'text': str, 'labels': int})
+
         return data[['text', 'labels']]
