@@ -10,6 +10,9 @@ DATA_DIR = 'data'
 TRAIN_DATA = os.path.join(DATA_DIR, 'train_preprocessed.csv')
 TEST_DATA = os.path.join(DATA_DIR, 'test_preprocessed.csv')
 
+TRAIN_TESTING_DATA = os.path.join(DATA_DIR, 'train_sarcasm_preprocessed.csv')
+TEST_TESTING_DATA = os.path.join(DATA_DIR, 'test_sarcasm_preprocessed.csv')
+
 T5_OUTPUT = 't5-output'
 BERT_OUTPUT = 'bert-output'
 

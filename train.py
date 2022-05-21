@@ -41,7 +41,7 @@ def prepare_bert(number_of_rows: int) -> BertWrapper:
 if __name__ == '__main__':
     utils.prepare_environment()
 
-    raw_train_data = pd.read_csv(consts.TRAIN_DATA)
+    raw_train_data = pd.read_csv(consts.TRAIN_TESTING_DATA)
     # test_data = pd.read_csv(consts.TEST_DATA)
     # test_inputs, test_labels = utils.prepare_evaluation_data(test_data)
 

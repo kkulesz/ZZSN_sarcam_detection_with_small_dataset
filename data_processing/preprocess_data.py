@@ -7,9 +7,10 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.tokenize import TweetTokenizer
 
-test_or_train = 'train'
+test_or_train = 'test'
 input_file = f'../data/{test_or_train}_downloaded.csv'
-output_file = f'../data/{test_or_train}_preprocessed.csv'
+output_file = f'../data/{test_or_train}_sarcasm_preprocessed.csv'
+ONLY_SARCASM = True
 
 p.set_options(
     p.OPT.URL, p.OPT.EMOJI, p.OPT.MENTION, p.OPT.SMILEY, p.OPT.NUMBER, p.OPT.RESERVED
@@ -46,7 +47,7 @@ def initial_preprocess(df: pd.DataFrame):
     for i, label in enumerate(df['sarcasm_label']):
         df.loc[i, 'sarcasm_label'] = 0 if label == 'not_sarcastic' else 1
 
-    return df
+    return df if ONLY_SARCASM == False else df[df["sarcasm_label"] == 1]
 
 
 def handle_tokenization(df):
