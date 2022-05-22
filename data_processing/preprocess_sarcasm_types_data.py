@@ -4,16 +4,25 @@ import preprocessor as p
 
 import nltk
 from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
 from nltk.tokenize import TweetTokenizer
 
 test_or_train = 'train'
 input_file = f'../data/{test_or_train}_downloaded.csv'
-output_file = f'../data/{test_or_train}_preprocessed.csv'
+output_file = f'../data/{test_or_train}_sarcasm_preprocessed.csv'
+ONLY_SARCASM = True
 
 p.set_options(
     p.OPT.URL, p.OPT.EMOJI, p.OPT.MENTION, p.OPT.SMILEY, p.OPT.NUMBER, p.OPT.RESERVED
 )  # remove everything instead of hashtags
+
+mapping = [
+    {'type':'sarcasm', 'id':1},
+    {'type':'irony', 'id':2},
+    {'type':'satire', 'id':3},
+    {'type':'overstatement', 'id':4},
+    {'type':'rhetorical question', 'id':5},
+    {'type':'understatement', 'id':6}
+]
 
 
 def initial_preprocess(df: pd.DataFrame):
@@ -46,6 +55,12 @@ def initial_preprocess(df: pd.DataFrame):
     for i, label in enumerate(df['sarcasm_label']):
         df.loc[i, 'sarcasm_label'] = 0 if label == 'not_sarcastic' else 1
 
+    if ONLY_SARCASM:
+        df = df[df["sarcasm_label"] == 1]
+
+    df['sarcasm_type'] = df['sarcasm_type'].rank(method='dense', ascending=False).astype(int)-1
+    newDf = df['sarcasm_type'].value_counts()
+    print(newDf)
     return df
 
 
@@ -74,5 +89,5 @@ if __name__ == '__main__':
     df = initial_preprocess(df)
     # df = handle_tokenization(df)
 
-    df = df[['sarcasm_label', 'text']]
+    df = df[['sarcasm_type', 'text']]
     df.to_csv(output_file)

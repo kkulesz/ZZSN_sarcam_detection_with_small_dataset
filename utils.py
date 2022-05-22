@@ -34,3 +34,10 @@ def prepare_evaluation_data(data):
     labels = data['sarcasm_label'].astype(int).values.tolist()
 
     return inputs, labels
+
+
+def prepare_sarcasm_evaluation_data(data):
+    inputs = data['text'].astype(str).values.tolist()
+    labels = data['sarcasm_type'].astype(int).values.tolist()
+
+    return inputs, labels

@@ -1,8 +1,9 @@
 import pandas as pd
 import torch
 from simpletransformers.t5 import T5Model
-from simpletransformers.classification import ClassificationModel
+from simpletransformers.classification import ClassificationModel, MultiLabelClassificationModel
 
+from models.bert_sarcasm_classifier import BertSarcasmClasifierWrapper
 from models.t5 import T5Wrapper
 from models.bert import BertWrapper
 from trainer import OurTrainer
@@ -28,14 +29,23 @@ def prepare_t5(number_of_rows: int) -> T5Wrapper:
 def prepare_bert(number_of_rows: int) -> BertWrapper:
     bert_args = consts.BERT_ARGS
     bert_args.output_dir = f"{consts.BERT_OUTPUT}-{number_of_rows}"
-    bert = ClassificationModel(
-        bert_args.model_type,
-        consts.BERT_MODEL_NAME,
-        args=bert_args,
-        use_cuda=use_cuda
-    )
-
-    return BertWrapper(bert)
+    if consts.CURRENT_TASK == consts.TASK_DETECT:
+        bert = ClassificationModel(
+            consts.BERT_MODEL_TYPE,
+            consts.BERT_MODEL_NAME,
+            args=bert_args,
+            use_cuda=use_cuda
+        )
+        return BertWrapper(bert)
+    else:
+        bert = ClassificationModel(
+            consts.BERT_MODEL_TYPE,
+            consts.BERT_MODEL_NAME,
+            args=bert_args,
+            use_cuda=use_cuda,
+            num_labels=6
+        )
+        return BertSarcasmClasifierWrapper(bert)
 
 
 if __name__ == '__main__':
