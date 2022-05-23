@@ -10,8 +10,8 @@ from trainer import OurTrainer
 import consts
 import utils
 
-use_cuda = torch.cuda.is_available()
-
+# use_cuda = torch.cuda.is_available()
+use_cuda = False
 
 def prepare_t5(number_of_rows: int) -> T5Wrapper:
     t5_args = consts.T5_ARGS
@@ -43,7 +43,7 @@ def prepare_bert(number_of_rows: int) -> BertWrapper:
             consts.BERT_MODEL_NAME,
             args=bert_args,
             use_cuda=use_cuda,
-            num_labels=6
+            num_labels=6,
         )
         return BertSarcasmClasifierWrapper(bert)
 
@@ -51,7 +51,10 @@ def prepare_bert(number_of_rows: int) -> BertWrapper:
 if __name__ == '__main__':
     utils.prepare_environment()
 
-    raw_train_data = pd.read_csv(consts.TRAIN_TESTING_DATA)
+    if consts.CURRENT_TASK == consts.TASK_DETECT:
+        raw_train_data = pd.read_csv(consts.TEST_DATA)
+    else:
+        raw_train_data = pd.read_csv(consts.TRAIN_TESTING_DATA)
     # test_data = pd.read_csv(consts.TEST_DATA)
     # test_inputs, test_labels = utils.prepare_evaluation_data(test_data)
 

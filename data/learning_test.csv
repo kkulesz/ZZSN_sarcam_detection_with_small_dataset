@@ -1,0 +1,9 @@
+,sarcasm_type,text
+0,0,this is good
+1,0,this is bad
+2,0,this is ugly
+3,0,this is tidy
+4,1,this is not good
+5,1,this is not bad
+6,1,this is not ugly
+7,1,this is not tidy

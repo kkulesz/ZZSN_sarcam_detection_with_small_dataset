@@ -35,7 +35,7 @@ def prepare_bert(number_of_rows: int) -> BertWrapper:
     if consts.CURRENT_TASK == consts.TASK_DETECT:
         bert = ClassificationModel(
             consts.BERT_MODEL_TYPE,
-            consts.BERT_MODEL_NAME,
+            bert_args.output_dir,
             args=bert_args,
             use_cuda=use_cuda
         )
@@ -43,7 +43,7 @@ def prepare_bert(number_of_rows: int) -> BertWrapper:
     else:
         bert = ClassificationModel(
             consts.BERT_MODEL_TYPE,
-            consts.BERT_MODEL_NAME,
+            bert_args.output_dir,
             args=bert_args,
             use_cuda=use_cuda,
             num_labels=6
@@ -55,11 +55,10 @@ def prepare_bert(number_of_rows: int) -> BertWrapper:
 if __name__ == '__main__':
     utils.prepare_environment()
 
-    data = pd.read_csv(consts.TEST_TESTING_DATA)
     if consts.CURRENT_TASK == consts.TASK_DETECT:
-        inputs, labels = utils.prepare_evaluation_data(data)
+        inputs, labels = utils.prepare_evaluation_data(pd.read_csv(consts.TEST_DATA))
     else:
-        inputs, labels = utils.prepare_sarcasm_evaluation_data(data)
+        inputs, labels = utils.prepare_sarcasm_evaluation_data(pd.read_csv(consts.TEST_TESTING_DATA))
 
     train_size = consts.INIT_TRAIN_SIZE
     while train_size <= consts.MAX_TRAIN_SIZE:
@@ -80,7 +79,7 @@ if __name__ == '__main__':
 
         print(f" -Precision:  {precision_score(labels, predictions, average='micro')}")
         print(f" -Accuracy:   {accuracy_score(labels, predictions)}")
-        print(f" -Recall:     {recall_score(labels, predictions, average='weighted')}")
+        print(f" -Recall:     {recall_score(labels, predictions, average='weighted', zero_division=1)}")
         print(f" -F1 score:   {f1_score(labels, predictions, average='macro')}")
 
         train_size += consts.STEP
