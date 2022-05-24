@@ -4,7 +4,7 @@ from simpletransformers.classification import ClassificationArgs
 
 T5 = 't5'
 BERT = 'bert'
-CURRENT_VARIANT = T5
+CURRENT_VARIANT = BERT
 ####################################################################
 DATA_DIR = 'data'
 TRAIN_DATA = os.path.join(DATA_DIR, 'train_preprocessed.csv')
@@ -41,5 +41,5 @@ BERT_ARGS = ClassificationArgs(
     logging_steps=1,
     save_model_every_epoch=False,
     save_steps=INIT_TRAIN_SIZE * SAVE_EVERY_N_EPOCHS,
-    learning_rate=LEARNING_RATE
+    learning_rate=LEARNING_RATE*1000
 )

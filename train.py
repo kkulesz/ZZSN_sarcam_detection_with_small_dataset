@@ -32,7 +32,8 @@ def prepare_bert(number_of_rows: int) -> BertWrapper:
         consts.BERT_MODEL_TYPE,
         consts.BERT_MODEL_NAME,
         args=bert_args,
-        use_cuda=use_cuda
+        use_cuda=use_cuda,
+        weight=[4, 1]
     )
     return BertWrapper(bert)
 
