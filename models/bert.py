@@ -16,7 +16,7 @@ class BertWrapper(TextBinaryClassifier):
 
     def predict(self, inputs):
         predictions, raw_outputs = self.model.predict(inputs)
-        return predictions
+        return list(predictions)
 
     def prepare_training_data(self, raw_data: pd.DataFrame):
         data = raw_data.copy()

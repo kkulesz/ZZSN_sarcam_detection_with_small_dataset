@@ -59,6 +59,7 @@ if __name__ == '__main__':
             raise Exception(f"Invalid variant={consts.CURRENT_VARIANT}!")
 
         predictions = model.predict(inputs)
+        print(labels)
         print(predictions)
         print(f" -Number of predicted sarcasms: {sum(predictions)}\n")
 

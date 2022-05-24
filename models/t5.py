@@ -16,6 +16,7 @@ class T5Wrapper(TextBinaryClassifier):
         )
 
     def predict(self, inputs):
+        inputs = list(map(lambda t: "binary classification: " + t, inputs))
         predictions = self.model.predict(inputs)
         integer_predictions = list(map(lambda p: int(p), predictions))
         return integer_predictions
@@ -25,7 +26,7 @@ class T5Wrapper(TextBinaryClassifier):
 
         data['prefix'] = 'binary classification'
         data['input_text'] = data['text']
-        data['target_text'] = data['labels']
+        data['target_text'] = data['sarcasm_label']
         data = data.astype({'prefix': str, 'input_text': str, 'target_text': str})
 
         return data[['prefix', 'input_text', 'target_text']]
