@@ -4,7 +4,6 @@ from simpletransformers.classification import ClassificationModel
 import torch
 from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
 
-from models.bert_sarcasm_classifier import BertSarcasmClasifierWrapper
 from models.t5 import T5Wrapper
 from models.bert import BertWrapper
 import consts
@@ -32,38 +31,24 @@ def prepare_t5(nrows: int) -> T5Wrapper:
 def prepare_bert(number_of_rows: int) -> BertWrapper:
     bert_args = consts.BERT_ARGS
     bert_args.output_dir = f"{consts.BERT_OUTPUT}-{number_of_rows}"
-    if consts.CURRENT_TASK == consts.TASK_DETECT:
-        bert = ClassificationModel(
-            consts.BERT_MODEL_TYPE,
-            bert_args.output_dir,
-            args=bert_args,
-            use_cuda=use_cuda
-        )
-        return BertWrapper(bert)
-    else:
-        bert = ClassificationModel(
-            consts.BERT_MODEL_TYPE,
-            bert_args.output_dir,
-            args=bert_args,
-            use_cuda=use_cuda,
-            num_labels=6
-        )
-        return BertSarcasmClasifierWrapper(bert)
-
+    bert = ClassificationModel(
+        consts.BERT_MODEL_TYPE,
+        bert_args.output_dir,
+        args=bert_args,
+        use_cuda=use_cuda
+    )
+    return BertWrapper(bert)
 
 
 if __name__ == '__main__':
     utils.prepare_environment()
 
-    if consts.CURRENT_TASK == consts.TASK_DETECT:
-        inputs, labels = utils.prepare_evaluation_data(pd.read_csv(consts.TEST_DATA))
-    else:
-        inputs, labels = utils.prepare_sarcasm_evaluation_data(pd.read_csv(consts.TEST_TESTING_DATA))
+    inputs, labels = utils.prepare_evaluation_data(pd.read_csv(consts.TEST_DATA))
 
     train_size = consts.INIT_TRAIN_SIZE
     while train_size <= consts.MAX_TRAIN_SIZE:
         torch.cuda.empty_cache()
-        print("="*100)
+        print("=" * 100)
         print(f"Evaluating {consts.CURRENT_VARIANT} for nrows={train_size}")
 
         if consts.CURRENT_VARIANT == consts.T5:
