@@ -2,7 +2,7 @@ import pandas as pd
 from simpletransformers.t5 import T5Model
 from simpletransformers.classification import ClassificationModel
 import torch
-from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
+from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score, confusion_matrix
 
 from models.t5 import T5Wrapper
 from models.bert import BertWrapper
@@ -59,10 +59,8 @@ if __name__ == '__main__':
             raise Exception(f"Invalid variant={consts.CURRENT_VARIANT}!")
 
         predictions = model.predict(inputs)
-        print(labels)
-        print(predictions)
-        print(f" -Number of predicted sarcasms: {sum(predictions)}\n")
 
+        print(confusion_matrix(labels, predictions))
         print(f" -Precision:  {precision_score(labels, predictions, average='micro')}")
         print(f" -Accuracy:   {accuracy_score(labels, predictions)}")
         print(f" -Recall:     {recall_score(labels, predictions, average='weighted', zero_division=1)}")

@@ -4,7 +4,7 @@ from simpletransformers.classification import ClassificationArgs
 
 T5 = 't5'
 BERT = 'bert'
-CURRENT_VARIANT = BERT
+CURRENT_VARIANT = T5
 ####################################################################
 DATA_DIR = 'data'
 TRAIN_DATA = os.path.join(DATA_DIR, 'train_preprocessed.csv')
