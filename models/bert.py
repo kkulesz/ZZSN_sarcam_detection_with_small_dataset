@@ -14,6 +14,9 @@ class BertWrapper(TextBinaryClassifier):
             show_running_loss=False
         )
 
+    def eval(self, data):
+        return self.model.eval_model(data)
+
     def predict(self, inputs):
         predictions, raw_outputs = self.model.predict(inputs)
         return list(predictions)

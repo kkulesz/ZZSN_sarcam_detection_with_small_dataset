@@ -15,6 +15,9 @@ class T5Wrapper(TextBinaryClassifier):
             show_running_loss=False
         )
 
+    def eval(self, data):
+        return self.model.eval_model(data)
+
     def predict(self, inputs):
         inputs = list(map(lambda t: "binary classification: " + t, inputs))
         predictions = self.model.predict(inputs)
