@@ -36,10 +36,11 @@ T5_ARGS = T5Args(
 BERT_MODEL_TYPE = 'roberta'  # bert, roberta, xlm, ...
 BERT_MODEL_NAME = 'roberta-base'
 BERT_ARGS = ClassificationArgs(
+    train_batch_size=32,
     overwrite_output_dir=True,
     num_train_epochs=NUM_OF_TRAIN_EPOCHS,
     logging_steps=1,
     save_model_every_epoch=False,
     save_steps=INIT_TRAIN_SIZE * SAVE_EVERY_N_EPOCHS,
-    learning_rate=LEARNING_RATE*1000
+    learning_rate=LEARNING_RATE
 )
